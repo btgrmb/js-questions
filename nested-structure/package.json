@@ -1,0 +1,13 @@
+{
+  "name": "nested-structure",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "vitest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
