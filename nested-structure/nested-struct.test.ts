@@ -4,5 +4,5 @@ import { expectData } from './expect-data';
 import { parseStruct } from './parse';
 
 test('parseStruct', () => {
-  expect(parseStruct(mockData)).toBe(expectData);
+  expect(parseStruct(mockData)).toStrictEqual(expectData);
 });
