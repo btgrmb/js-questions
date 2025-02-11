@@ -1,19 +1,35 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const checkUrlsAvailabity = async (urls: string[]): Promise<void> => {
+  let urlsChecked = 0;
+  const total = urls.length;
+  const results: any[] = [];
 
+  await Promise.all(
+    urls.map(async (url) => {
+      const abortController = new AbortController();
+      const timeoutId = setTimeout(() => abortController.abort(), 10000); 
+
+      try {
+        await fetch(url, {
+          mode: 'no-cors',
+          signal: abortController.signal,
+        });
+
+        results.push({ url, status: 'доступен' });
+      } catch (err) {
+        results.push({ url, status: 'недоступен' });
+      }
+
+      clearTimeout(timeoutId); 
+      urlsChecked++;
+      console.log(`Прогресс: ${urlsChecked}/${total}`);
+    })
+  );
+
+  console.log('\nДоступность ресурсов: ');
+  results.forEach(result => {
+    console.log(result.url, result.status);
+  });
+};
+
+checkUrlsAvailabity(['https://google.com', 'https://yandex.ru', 'https://mail.ru']);
